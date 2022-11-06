@@ -1,0 +1,33 @@
+#Importing Libraries
+import pandas as pd
+import numpy as np
+import plotly.express as px
+import plotly.graph_objects as go
+
+#Getting Dataset
+movies_data= pd.read_csv("movies.dat", delimiter='::')
+print(movies_data.head())
+ratings_data = pd.read_csv("ratings.dat", delimiter='::')
+print(ratings_data.head())
+
+#Giving it coloumns
+movies_data.columns=['ID', 'Movie Name', 'Type']
+print(movies_data.head())
+print(" ")
+ratings_data.columns=['User', 'ID', 'Ratings', 'Timestamp']
+print(ratings_data.head())
+
+#Merging both data files
+data=pd.merge(movies_data,ratings_data,on=["ID","ID"])
+print(data.head())
+
+# Distribution of ratings
+ratings = data["Ratings"].value_counts()
+numbers = ratings.index
+quantity = ratings.values
+fig = px.pie(data, values=quantity, names=numbers,title="Share of Ratings")
+fig.show()
+
+#List of 10 rated movie
+List_10_Rated=data[data["Ratings"]==10]
+print(List_10_Rated["Movie Name"].value_counts())
